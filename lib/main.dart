@@ -13,8 +13,8 @@ class MyApp extends StatelessWidget {
         ),
         home: new Browser(
 //              url: "https://www.douyu.com",
-//              url: "https://www.bilibili.com",
-          url: "http://m.vcanbuy.com",
+              url: "https://www.bilibili.com",
+//          url: "http://m.vcanbuy.com",
 //          title: "百度",
         ));
   }
