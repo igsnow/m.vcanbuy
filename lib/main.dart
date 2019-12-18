@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:m_vcanbuy/pages/splash_page.dart';
 import 'package:m_vcanbuy/widgets/browser.dart';
 
 void main() => runApp(new MyApp());
@@ -8,9 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Vcanbuy',
-      home: new Browser(
-        url: "http://m.vcanbuy.com",
-      ),
+      home: new SplashPage(),
     );
   }
 }
