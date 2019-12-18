@@ -99,14 +99,14 @@ class SplashPageState extends State<SplashPage> {
             new Align(
               alignment: Alignment.bottomCenter,
               child: new Container(
-                margin: EdgeInsets.only(bottom: 160.0),
+                margin: EdgeInsets.only(bottom: 65.0),
                 child: new InkWell(
                   onTap: () {
                     _goMain();
                   },
                   child: new CircleAvatar(
-                    radius: 48.0,
-                    backgroundColor: Colors.indigoAccent,
+                    radius: 40.0,
+                    backgroundColor: Colors.orange,
                     child: new Padding(
                       padding: EdgeInsets.all(2.0),
                       child: new Text(
@@ -199,11 +199,6 @@ class SplashPageState extends State<SplashPage> {
                 : new Swiper(
                     autoStart: false,
                     circular: false,
-                    indicator: CircleSwiperIndicator(
-                      radius: 4.0,
-                      padding: EdgeInsets.only(bottom: 30.0),
-                      itemColor: Colors.black26,
-                    ),
                     children: _bannerList),
           ),
           new Offstage(
