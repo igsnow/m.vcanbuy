@@ -9,7 +9,6 @@ import 'package:m_vcanbuy/utils/http_utils.dart';
 import 'package:m_vcanbuy/utils/navigator_util.dart';
 import 'package:m_vcanbuy/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:m_vcanbuy/res/strings.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -233,8 +232,7 @@ class SplashPageState extends State<SplashPage> {
                 child: new Container(
                     padding: EdgeInsets.all(12.0),
                     child: new Text(
-                      IntlUtil.getString(context, Ids.jump_count,
-                          params: ['$_count']),
+                     "igsnow",
                       style: new TextStyle(fontSize: 14.0, color: Colors.white),
                     ),
                     decoration: new BoxDecoration(

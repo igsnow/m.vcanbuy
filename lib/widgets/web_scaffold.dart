@@ -27,7 +27,8 @@ class WebScaffold extends StatefulWidget {
 
 class WebScaffoldState extends State<WebScaffold> {
   void _onPopSelected(String value) {
-    String _title = widget.title ?? IntlUtil.getString(context, widget.titleId);
+//    String _title = widget.title ?? IntlUtil.getString(context, widget.titleId);
+    String _title = widget.title;
     switch (value) {
       case "browser":
         NavigatorUtil.launchInBrowser(widget.url, title: _title);
@@ -48,7 +49,7 @@ class WebScaffoldState extends State<WebScaffold> {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(
-          widget.title ?? IntlUtil.getString(context, widget.titleId),
+          widget.title ,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
