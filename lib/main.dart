@@ -1,9 +1,7 @@
-import 'package:base_library/base_library.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:m_vcanbuy/pages/splash_page.dart';
 import 'package:m_vcanbuy/route/routes.dart';
-import 'package:m_vcanbuy/widgets/browser.dart';
 
 import 'application.dart';
 

@@ -2,19 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:base_library/base_library.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fluintl/fluintl.dart';
 import 'package:flukit/flukit.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:m_vcanbuy/common/common.dart';
 import 'package:m_vcanbuy/models/models.dart';
-import 'package:m_vcanbuy/res/strings.dart';
 import 'package:m_vcanbuy/route/routes.dart';
 import 'package:m_vcanbuy/utils/http_utils.dart';
-import 'package:m_vcanbuy/utils/navigator_util.dart';
-import 'package:m_vcanbuy/utils/utils.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../application.dart';
@@ -39,7 +33,7 @@ class SplashPageState extends State<SplashPage> {
   Timer _timer;
 
   int _status = 0;
-  int _count = 3;
+  int _count = 5;
 
   SplashModel _splashModel;
 
@@ -73,13 +67,8 @@ class SplashPageState extends State<SplashPage> {
       }
     });
 
-    bool isGuide = prefs.getBool(Constant.key_guide) ?? true;
-    // 是否已经加载过引导图
-    if (isGuide) {
-      _initGuideBanner();
-    } else {
-      _initSplash();
-    }
+    // 启动图加载完毕后加载广告闪图
+    _initSplash(prefs);
   }
 
   _initGuideBanner() {
@@ -133,7 +122,7 @@ class SplashPageState extends State<SplashPage> {
     }
   }
 
-  _initSplash() {
+  _initSplash(prefs) {
     if (_splashModel == null) {
       _goMain();
       return;
@@ -142,13 +131,21 @@ class SplashPageState extends State<SplashPage> {
       _status = 1;
     });
 
-    // 倒计时
+    // 闪图倒计时
     _timer = Timer.periodic(new Duration(seconds: 1), (timer) {
       setState(() {
         if (_count <= 1) {
           _timer.cancel();
           _timer = null;
-          _goMain();
+          // 如果是第一次启动app，闪图加载完毕后加载引导图
+          bool isGuide = prefs.getBool(Constant.key_guide);
+          print(isGuide);
+          if (!isGuide) {
+            _initGuideBanner();
+            prefs.setBool(Constant.key_guide, true);
+          } else {
+            _goMain();
+          }
         } else {
           _count = _count - 1;
         }
@@ -166,7 +163,7 @@ class SplashPageState extends State<SplashPage> {
     );
   }
 
-  // 构建闪屏背景
+  // 构建闪图广告背景
   Widget _buildSplashBg() {
     return new Image.asset(
       'images/splash_bg.png',
@@ -189,17 +186,8 @@ class SplashPageState extends State<SplashPage> {
       child: new Stack(
         children: <Widget>[
           new Offstage(
-            offstage: !(_status == 0),
+            offstage: !(_status == 1),
             child: _buildSplashBg(),
-          ),
-          new Offstage(
-            offstage: !(_status == 2),
-            child: _bannerList.isEmpty
-                ? new Container()
-                : new Swiper(
-                    autoStart: false,
-                    circular: false,
-                    children: _bannerList),
           ),
           new Offstage(
             offstage: !(_status == 1),
@@ -223,7 +211,14 @@ class SplashPageState extends State<SplashPage> {
                             new Border.all(width: 0.33, color: Colors.grey))),
               ),
             ),
-          )
+          ),
+          new Offstage(
+            offstage: !(_status == 2),
+            child: _bannerList.isEmpty
+                ? new Container()
+                : new Swiper(
+                    autoStart: false, circular: false, children: _bannerList),
+          ),
         ],
       ),
     );
