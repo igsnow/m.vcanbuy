@@ -6,6 +6,6 @@ import 'package:m_vcanbuy/widgets/browser.dart';
 var homeHandler = new Handler(
     handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
   return new Browser(
-    url: "https://www.bilibili.com",
+    url: "http://m.vcanbuy.com",
   );
 });
