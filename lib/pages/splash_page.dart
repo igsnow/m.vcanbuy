@@ -161,21 +161,21 @@ class SplashPageState extends State<SplashPage> {
           new Offstage(
             offstage: !(_status == 1),
             child: new Container(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.topRight,
               margin: EdgeInsets.all(20.0),
               child: InkWell(
                 onTap: () {
                   _goMain();
                 },
                 child: new Container(
-                    padding: EdgeInsets.all(12.0),
+                    padding: EdgeInsets.all(10.0),
                     child: new Text(
-                      '$_count 跳转',
+                      '$_count skip',
                       style: new TextStyle(fontSize: 14.0, color: Colors.white),
                     ),
                     decoration: new BoxDecoration(
                         color: Color(0x66000000),
-                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         border:
                             new Border.all(width: 0.33, color: Colors.grey))),
               ),
