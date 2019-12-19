@@ -57,16 +57,14 @@ class SplashPageState extends State<SplashPage> {
           _timer.cancel();
           _timer = null;
 
-          _initGuideBanner();
-
           // 如果是第一次启动app，闪图加载完毕后默认加载引导图
-//          bool isGuide = prefs.getBool(Constant.key_guide) ?? true;
-//          if (isGuide) {
-//            _initGuideBanner();
-//            prefs.setBool(Constant.key_guide, false);
-//          } else {
-//            _goMain();
-//          }
+          bool isGuide = prefs.getBool(Constant.key_guide) ?? true;
+          if (isGuide) {
+            _initGuideBanner();
+            prefs.setBool(Constant.key_guide, false);
+          } else {
+            _goMain();
+          }
         } else {
           _count = _count - 1;
         }
