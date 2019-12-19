@@ -56,14 +56,17 @@ class SplashPageState extends State<SplashPage> {
         if (_count <= 1) {
           _timer.cancel();
           _timer = null;
+
+          _initGuideBanner();
+
           // 如果是第一次启动app，闪图加载完毕后默认加载引导图
-          bool isGuide = prefs.getBool(Constant.key_guide) ?? true;
-          if (isGuide) {
-            _initGuideBanner();
-            prefs.setBool(Constant.key_guide, false);
-          } else {
-            _goMain();
-          }
+//          bool isGuide = prefs.getBool(Constant.key_guide) ?? true;
+//          if (isGuide) {
+//            _initGuideBanner();
+//            prefs.setBool(Constant.key_guide, false);
+//          } else {
+//            _goMain();
+//          }
         } else {
           _count = _count - 1;
         }
@@ -86,28 +89,26 @@ class SplashPageState extends State<SplashPage> {
               height: double.infinity,
             ),
             new Align(
-              alignment: Alignment.bottomCenter,
-              child: new Container(
-                margin: EdgeInsets.only(bottom: 65.0),
-                child: new InkWell(
-                  onTap: () {
-                    _goMain();
-                  },
-                  child: new CircleAvatar(
-                    radius: 40.0,
-                    backgroundColor: Colors.orange,
-                    child: new Padding(
-                      padding: EdgeInsets.all(2.0),
-                      child: new Text(
-                        '立即体验',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 16.0),
+                alignment: Alignment.bottomCenter,
+                child: Opacity(
+                  opacity: 0.0,
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 35.0),
+                    child: new Material(
+                      child: new Ink(
+                        child: new InkWell(
+                            onTap: () {
+                              _goMain();
+                            },
+                            child: Container(
+                              alignment: Alignment(0, 0),
+                              height: 80,
+                              width: 300,
+                            )),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ),
+                )),
           ],
         ));
       } else {
@@ -162,13 +163,13 @@ class SplashPageState extends State<SplashPage> {
             offstage: !(_status == 1),
             child: new Container(
               alignment: Alignment.topRight,
-              margin: EdgeInsets.all(20.0),
+              margin: EdgeInsets.fromLTRB(0, 25.0, 20.0, 0),
               child: InkWell(
                 onTap: () {
                   _goMain();
                 },
                 child: new Container(
-                    padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(8.0),
                     child: new Text(
                       '$_count skip',
                       style: new TextStyle(fontSize: 14.0, color: Colors.white),
