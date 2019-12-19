@@ -134,7 +134,7 @@ class SplashPageState extends State<SplashPage> {
   // 构建闪图广告背景
   Widget _buildSplashBg() {
     return new Image.asset(
-      Utils.getImgPath('splash_bg'),
+      "images/splash.jpeg",
       width: double.infinity,
       fit: BoxFit.fill,
       height: double.infinity,
