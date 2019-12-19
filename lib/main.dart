@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:m_vcanbuy/pages/splash_page.dart';
 import 'package:m_vcanbuy/route/routes.dart';
 import 'package:m_vcanbuy/widgets/browser.dart';
+import 'package:m_vcanbuy/widgets/webview.dart';
 import 'application.dart';
 
 void main() => runApp(new MyApp());
@@ -17,8 +18,8 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Vcanbuy',
 //      onGenerateRoute: Application.router.generator,
-      home: new Browser(
-        url: "https://www.youku.com",
+      home: new WebView(
+        url: "http://m.vcanbuy.com",
       ),
     );
   }
