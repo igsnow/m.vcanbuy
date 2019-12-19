@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:base_library/base_library.dart';
 import 'package:flukit/flukit.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:m_vcanbuy/common/common.dart';
-import 'package:m_vcanbuy/models/models.dart';
 import 'package:m_vcanbuy/route/routes.dart';
-import 'package:m_vcanbuy/utils/http_utils.dart';
+import 'package:m_vcanbuy/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../application.dart';
@@ -22,20 +18,18 @@ class SplashPage extends StatefulWidget {
 
 class SplashPageState extends State<SplashPage> {
   List<String> _guideList = [
-    'images/guide1.png',
-    'images/guide2.png',
-    'images/guide3.png',
-    'images/guide4.png'
+    Utils.getImgPath('guide1'),
+    Utils.getImgPath('guide2'),
+    Utils.getImgPath('guide3'),
+    Utils.getImgPath('guide4'),
   ];
 
   List<Widget> _bannerList = new List();
 
   Timer _timer;
 
-  int _status = 0;
-  int _count = 5;
-
-  SplashModel _splashModel;
+  int _status = 0; // 启动图类型 1.广告闪图 2.引导图
+  int _count = 5; // 倒计时
 
   @override
   void initState() {
@@ -44,31 +38,37 @@ class SplashPageState extends State<SplashPage> {
   }
 
   void _initAsync() async {
+    // 获取本地存储实例
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // 获取上次存储的闪屏页面
-    String jsonStr = prefs.getString(Constant.key_splash_model);
-    if (ObjectUtil.isNotEmpty(jsonStr)) {
-      Map<String, dynamic> splash = json.decode(jsonStr);
-      _splashModel = SplashModel.fromJson(splash);
-    }
-
-    HttpUtils httpUtils = new HttpUtils();
-    // 获取闪屏的广告数据
-    httpUtils.getSplash().then((model) {
-      if (ObjectUtil.isNotEmpty(model.imgUrl)) {
-        if (_splashModel == null || (_splashModel.imgUrl != model.imgUrl)) {
-          prefs.setString(Constant.key_splash_model, model.toString());
-          setState(() {
-            _splashModel = model;
-          });
-        }
-      } else {
-        prefs.setString(Constant.key_splash_model, null);
-      }
-    });
 
     // 启动图加载完毕后加载广告闪图
     _initSplash(prefs);
+  }
+
+  _initSplash(prefs) {
+    setState(() {
+      _status = 1;
+    });
+
+    // 闪图倒计时
+    _timer = Timer.periodic(new Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_count <= 1) {
+          _timer.cancel();
+          _timer = null;
+          // 如果是第一次启动app，闪图加载完毕后默认加载引导图
+          bool isGuide = prefs.getBool(Constant.key_guide) ?? true;
+          if (isGuide) {
+            _initGuideBanner();
+            prefs.setBool(Constant.key_guide, false);
+          } else {
+            _goMain();
+          }
+        } else {
+          _count = _count - 1;
+        }
+      });
+    });
   }
 
   _initGuideBanner() {
@@ -122,37 +122,6 @@ class SplashPageState extends State<SplashPage> {
     }
   }
 
-  _initSplash(prefs) {
-    if (_splashModel == null) {
-      _goMain();
-      return;
-    }
-    setState(() {
-      _status = 1;
-    });
-
-    // 闪图倒计时
-    _timer = Timer.periodic(new Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_count <= 1) {
-          _timer.cancel();
-          _timer = null;
-          // 如果是第一次启动app，闪图加载完毕后加载引导图
-          bool isGuide = prefs.getBool(Constant.key_guide);
-          print(isGuide);
-          if (!isGuide) {
-            _initGuideBanner();
-            prefs.setBool(Constant.key_guide, true);
-          } else {
-            _goMain();
-          }
-        } else {
-          _count = _count - 1;
-        }
-      });
-    });
-  }
-
   // 跳转主页
   void _goMain() {
     Application.router.navigateTo(
@@ -166,7 +135,7 @@ class SplashPageState extends State<SplashPage> {
   // 构建闪图广告背景
   Widget _buildSplashBg() {
     return new Image.asset(
-      'images/splash_bg.png',
+      Utils.getImgPath('splash_bg'),
       width: double.infinity,
       fit: BoxFit.fill,
       height: double.infinity,
