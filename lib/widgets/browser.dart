@@ -8,8 +8,8 @@ class Browser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: WebView(
+    return new Scaffold(
+      body: new WebView(
         initialUrl: url,
         javascriptMode: JavascriptMode.unrestricted,
       ),
