@@ -6,6 +6,6 @@ import 'package:m_vcanbuy/widgets/browser.dart';
 var homeHandler = new Handler(
     handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
   return Browser(
-    url: "https:www.douyu.com",
+    url: "http:m.vcanbuy.com",
   );
 });
