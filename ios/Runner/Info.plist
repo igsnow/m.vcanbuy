@@ -50,5 +50,13 @@
         <key>NSAllowsArbitraryLoadsInWebContent</key>
         <true/>
     </dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Vcanbuy want to access your camera</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Vcanbuy want to access your photo library</string>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>remote-notification</string>
+    </array>
 </dict>
 </plist>
