@@ -12,6 +12,13 @@ class Browser extends StatelessWidget {
       body: new WebView(
         initialUrl: url,
         javascriptMode: JavascriptMode.unrestricted,
+        javascriptChannels: <JavascriptChannel>[
+          JavascriptChannel(
+              name: "takePhoto",
+              onMessageReceived: (JavascriptMessage message) {
+                print("参数： ${message.message}");
+              }),
+        ].toSet(),
       ),
     );
   }
