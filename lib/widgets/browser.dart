@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:toast/toast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Browser extends StatelessWidget {
@@ -14,12 +16,20 @@ class Browser extends StatelessWidget {
         javascriptMode: JavascriptMode.unrestricted,
         javascriptChannels: <JavascriptChannel>[
           JavascriptChannel(
-              name: "takePhoto",
+              name: "Toast",
               onMessageReceived: (JavascriptMessage message) {
-                print("参数： ${message.message}");
+                Toast.show(message.message, context);
+                print(message.message);
+                _openGallery();
               }),
         ].toSet(),
       ),
     );
   }
+
+
+  _openGallery() async {
+    await ImagePicker.pickImage(source: ImageSource.gallery);
+  }
+
 }
