@@ -27,9 +27,8 @@ class Browser extends StatelessWidget {
     );
   }
 
-
   _openGallery() async {
-    await ImagePicker.pickImage(source: ImageSource.gallery);
+    var _img = await ImagePicker.pickImage(source: ImageSource.gallery);
+    print(_img);
   }
-
 }
