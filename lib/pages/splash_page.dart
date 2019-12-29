@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flukit/flukit.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +127,7 @@ class SplashPageState extends State<SplashPage> {
   }
 
   // 闪图倒计时直接跳过
-  void _skipTime(){
+  void _skipTime() {
     // 销毁定时器
     _timer.cancel();
     _timer = null;
@@ -145,11 +146,11 @@ class SplashPageState extends State<SplashPage> {
 
   // 构建闪图广告背景
   Widget _buildSplashBg() {
-    return new Image.network(
-      splashImg,
+    return Image(
+      image: CachedNetworkImageProvider(splashImg),
       width: double.infinity,
-      fit: BoxFit.fill,
       height: double.infinity,
+      fit: BoxFit.fill,
     );
   }
 
