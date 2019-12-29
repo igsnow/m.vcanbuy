@@ -125,6 +125,14 @@ class SplashPageState extends State<SplashPage> {
     }
   }
 
+  // 闪图倒计时直接跳过
+  void _skipTime(){
+    // 销毁定时器
+    _timer.cancel();
+    _timer = null;
+    _loadPage();
+  }
+
   // 跳转到首页
   void _goMain() {
     Application.router.navigateTo(
@@ -168,7 +176,7 @@ class SplashPageState extends State<SplashPage> {
               margin: EdgeInsets.fromLTRB(0, 28.0, 20.0, 0),
               child: InkWell(
                 onTap: () {
-                  _loadPage();
+                  _skipTime();
                 },
                 child: new Container(
                     padding: EdgeInsets.all(5.0),
