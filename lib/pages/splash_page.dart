@@ -37,18 +37,11 @@ class SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    _initAsync();
-  }
-
-  void _initAsync() async {
-    // 获取本地存储实例
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
     // 启动图加载完毕后加载广告闪图
-    _initSplash(prefs);
+    _initSplash();
   }
 
-  _initSplash(prefs) {
+  _initSplash() {
     setState(() {
       _status = 1;
     });
@@ -57,24 +50,18 @@ class SplashPageState extends State<SplashPage> {
     _timer = Timer.periodic(new Duration(seconds: 1), (timer) {
       setState(() {
         if (_count <= 0) {
+          // 倒计时结束后销毁定时器，表面内存泄漏
           _timer.cancel();
           _timer = null;
-
-          // 如果是第一次启动app，闪图加载完毕后默认加载引导图
-          bool isGuide = prefs.getBool(Constant.key_guide) ?? true;
-          if (isGuide) {
-            _initGuideBanner();
-            prefs.setBool(Constant.key_guide, false);
-          } else {
-            _goMain();
-          }
+          _loadPage();
         } else {
-          _count = _count - 1;
+          _count -= 1;
         }
       });
     });
   }
 
+  // 加载引导图
   _initGuideBanner() {
     setState(() {
       _status = 2;
@@ -123,7 +110,22 @@ class SplashPageState extends State<SplashPage> {
     }
   }
 
-  // 跳转主页
+  // 判断跳转主页或者引导页
+  void _loadPage() async {
+    // 获取本地存储实例
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // 如果是第一次启动app，加载引导图
+    bool isGuide = prefs.getBool(Constant.key_guide) ?? true;
+    if (isGuide) {
+      _initGuideBanner();
+      prefs.setBool(Constant.key_guide, false);
+    } else {
+      // 如果不是第一次启动app，直接跳转首页
+      _goMain();
+    }
+  }
+
+  // 跳转到首页
   void _goMain() {
     Application.router.navigateTo(
       context,
@@ -166,7 +168,7 @@ class SplashPageState extends State<SplashPage> {
               margin: EdgeInsets.fromLTRB(0, 28.0, 20.0, 0),
               child: InkWell(
                 onTap: () {
-                  _goMain();
+                  _loadPage();
                 },
                 child: new Container(
                     padding: EdgeInsets.all(5.0),
@@ -188,7 +190,7 @@ class SplashPageState extends State<SplashPage> {
             offstage: !(_status == 1),
             child: new Container(
               alignment: Alignment.bottomCenter,
-              margin: EdgeInsets.only(bottom: 80),
+              margin: EdgeInsets.only(bottom: 70),
               child: new Image.asset(
                 Utils.getImgPath("logo"),
                 width: 250,
