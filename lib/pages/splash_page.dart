@@ -17,6 +17,9 @@ class SplashPage extends StatefulWidget {
 }
 
 class SplashPageState extends State<SplashPage> {
+  String splashImg =
+      "https://res.vcanbuy.com/misc/93b2c9fbb3401e66e29a345b5bff85bf.png";
+
   List<String> _guideList = [
     Utils.getImgPath('guide1'),
     Utils.getImgPath('guide2'),
@@ -53,7 +56,7 @@ class SplashPageState extends State<SplashPage> {
     // 闪图倒计时
     _timer = Timer.periodic(new Duration(seconds: 1), (timer) {
       setState(() {
-        if (_count <= 1) {
+        if (_count <= 0) {
           _timer.cancel();
           _timer = null;
 
@@ -110,7 +113,6 @@ class SplashPageState extends State<SplashPage> {
           ],
         ));
       } else {
-        // print(_guideList[i]);
         _bannerList.add(new Image.asset(
           _guideList[i],
           fit: BoxFit.fill,
@@ -133,8 +135,8 @@ class SplashPageState extends State<SplashPage> {
 
   // 构建闪图广告背景
   Widget _buildSplashBg() {
-    return new Image.asset(
-      "images/splash.jpeg",
+    return new Image.network(
+      splashImg,
       width: double.infinity,
       fit: BoxFit.fill,
       height: double.infinity,
@@ -161,22 +163,36 @@ class SplashPageState extends State<SplashPage> {
             offstage: !(_status == 1),
             child: new Container(
               alignment: Alignment.topRight,
-              margin: EdgeInsets.fromLTRB(0, 25.0, 20.0, 0),
+              margin: EdgeInsets.fromLTRB(0, 28.0, 20.0, 0),
               child: InkWell(
                 onTap: () {
                   _goMain();
                 },
                 child: new Container(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: new Text(
-                      '$_count skip',
+                      '${_count}s skip',
                       style: new TextStyle(fontSize: 14.0, color: Colors.white),
                     ),
                     decoration: new BoxDecoration(
                         color: Color(0x66000000),
                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                        border:
-                            new Border.all(width: 0.33, color: Colors.grey))),
+                        border: new Border.all(
+                          width: 0.33,
+                          color: Colors.grey,
+                        ))),
+              ),
+            ),
+          ),
+          new Offstage(
+            offstage: !(_status == 1),
+            child: new Container(
+              alignment: Alignment.bottomCenter,
+              margin: EdgeInsets.only(bottom: 80),
+              child: new Image.asset(
+                Utils.getImgPath("logo"),
+                width: 250,
+                fit: BoxFit.fill,
               ),
             ),
           ),
@@ -185,7 +201,10 @@ class SplashPageState extends State<SplashPage> {
             child: _bannerList.isEmpty
                 ? new Container()
                 : new Swiper(
-                    autoStart: false, circular: false, children: _bannerList),
+                    autoStart: false,
+                    circular: false,
+                    children: _bannerList,
+                  ),
           ),
         ],
       ),
