@@ -199,10 +199,10 @@ class SplashPageState extends State<SplashPage> {
             offstage: !(_status == 1),
             child: new Container(
               alignment: Alignment.bottomCenter,
-              margin: EdgeInsets.only(bottom: 70),
+              margin: EdgeInsets.only(bottom: 60),
               child: new Image.asset(
                 Utils.getImgPath("logo"),
-                width: 250,
+                width: 200,
                 fit: BoxFit.fill,
               ),
             ),
